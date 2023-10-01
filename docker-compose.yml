@@ -6,7 +6,7 @@ services:
     restart: always
     image: postgres:16.0-alpine3.18
     volumes:
-      - .:/code
+      - postgres-db:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=$DB_USER
       - POSTGRES_PASSWORD=$DB_PASSWORD
@@ -20,3 +20,10 @@ services:
       - .:/code
     ports:
       - $PORT:$PORT
+    depends_on:
+      - db
+    environment:
+      - CGO_ENABLED=1
+
+volumes:
+  postgres-db:
