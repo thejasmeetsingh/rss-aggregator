@@ -19,6 +19,4 @@ My first go project which is basically a RSS management system where user can cr
 - And finally run `docker-compose up` and that's it!
 
 ## Pending modules
-- User can follow one or many feeds, Setup a M2M relationship.
 - Write an aggregation worker.
-- Allow users to view the feeds that they follow.
