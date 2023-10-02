@@ -3,12 +3,17 @@ FROM golang:1.21.1-alpine3.18
 LABEL authors="Jasmeet Singh"
 LABEL maintainer="thejasmeet.aws@gmail.com"
 
-RUN apk add build-base
+RUN apk add --no-cache build-base curl
 
-RUN go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+RUN curl https://downloads.sqlc.dev/sqlc_1.22.0_linux_amd64.tar.gz --output sqlc.tar.gz
+RUN tar -xvzf sqlc.tar.gz
+RUN mv sqlc bin/
+
+RUN curl -fsSL https://raw.githubusercontent.com/pressly/goose/master/install.sh | sh
 
 RUN mkdir /code
 WORKDIR /code
 
 COPY . /code/
+
+RUN chmod +x scripts/*.sh
