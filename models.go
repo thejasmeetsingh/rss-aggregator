@@ -12,6 +12,7 @@ type User struct {
 	CreatedAt  time.Time `json:"created_at"`
 	ModifiedAt time.Time `json:"modified_at"`
 	Name       string    `json:"name"`
+	APIKey     string    `json:"api_key"`
 }
 
 func databaseUserToUser(dbUser database.User) User {
@@ -20,5 +21,6 @@ func databaseUserToUser(dbUser database.User) User {
 		CreatedAt:  dbUser.CreatedAt,
 		ModifiedAt: dbUser.ModifiedAt,
 		Name:       dbUser.Name,
+		APIKey:     dbUser.ApiKey,
 	}
 }
