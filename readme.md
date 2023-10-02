@@ -18,5 +18,5 @@ My first go project which is basically a RSS management system where user can cr
     You can set the respected values as per your need
 - And finally run `docker-compose up` and that's it!
 
-## Pending modules
-- Write an aggregation worker.
+## Pending feature
+- Save the fetched post into the DB.
