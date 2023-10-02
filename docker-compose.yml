@@ -22,8 +22,7 @@ services:
       - $PORT:$PORT
     depends_on:
       - db
-    environment:
-      - CGO_ENABLED=1
+    env_file: .env
 
 volumes:
   postgres-db:

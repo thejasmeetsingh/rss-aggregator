@@ -1,7 +1,4 @@
-USERNAME=$1
-PASSWORD=$2
-DB_NAME=$3
-COMMAND=$4
+COMMAND=$1
 
 cd sql/schema
-goose postgres postgres://$USERNAME:$PASSWORD@db/$DB_NAME $COMMAND
+goose postgres $DB_URL $COMMAND

@@ -1,5 +1,5 @@
-.vscode/
-.env
-.git/
-.gitignore
+**/.vscode/
+**/.env
+**/.git/
+**/.gitignore
 rss-aggregator
