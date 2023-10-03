@@ -19,4 +19,5 @@ My first go project which is basically a RSS management system where user can cr
 - And finally run `docker-compose up` and that's it!
 
 ## Pending feature
-- Save the fetched post into the DB.
+- Add pagination in list APIs.
+- Accept limit query param in list APIs.
