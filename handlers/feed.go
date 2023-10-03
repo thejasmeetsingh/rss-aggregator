@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
@@ -8,9 +8,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/thejasmeetsingh/rss-aggregator/internal/database"
+	"github.com/thejasmeetsingh/rss-aggregator/models"
+	"github.com/thejasmeetsingh/rss-aggregator/utils"
 )
 
-func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *ApiConfig) CreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
@@ -21,7 +23,7 @@ func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Reques
 	err := decoder.Decode(&params)
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
 		return
 	}
 
@@ -35,23 +37,23 @@ func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Reques
 	})
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Cannot create a feed: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Cannot create a feed: %v", err))
 		return
 	}
 
-	respondWithJSON(w, 201, databaseFeedToFeed(feed))
+	RespondWithJSON(w, 201, models.DatabaseFeedToFeed(feed))
 }
 
-func (apiCfg *apiConfig) handlerGetFeeds(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *ApiConfig) GetFeeds(w http.ResponseWriter, r *http.Request) {
 	feeds, err := apiCfg.DB.GetFeeds(r.Context(), database.GetFeedsParams{
 		Limit:  10,
-		Offset: GetOffset(r),
+		Offset: utils.GetOffset(r),
 	})
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Cannot fetch the feeds: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Cannot fetch the feeds: %v", err))
 		return
 	}
 
-	respondWithJSON(w, 200, databaseFeedsToFeed(feeds))
+	RespondWithJSON(w, 200, models.DatabaseFeedsToFeed(feeds))
 }

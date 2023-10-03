@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
@@ -9,9 +9,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/thejasmeetsingh/rss-aggregator/internal/database"
+	"github.com/thejasmeetsingh/rss-aggregator/models"
+	"github.com/thejasmeetsingh/rss-aggregator/utils"
 )
 
-func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *ApiConfig) CreateFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {
 		FeedID uuid.UUID `json:"feed_id"`
 	}
@@ -21,7 +23,7 @@ func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.
 	err := decoder.Decode(&params)
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
 		return
 	}
 
@@ -34,34 +36,34 @@ func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.
 	})
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Error while try to follow a feed: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Error while try to follow a feed: %v", err))
 		return
 	}
 
-	respondWithJSON(w, 201, databaseFeedFollowToFeedFollow(feedFollow))
+	RespondWithJSON(w, 201, models.DatabaseFeedFollowToFeedFollow(feedFollow))
 }
 
-func (apiCfg *apiConfig) handlerGetFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *ApiConfig) GetFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
 	feedFollows, err := apiCfg.DB.GetFeedFollow(r.Context(), database.GetFeedFollowParams{
 		UserID: user.ID,
 		Limit:  10,
-		Offset: GetOffset(r),
+		Offset: utils.GetOffset(r),
 	})
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Cannot fetch feed follows: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Cannot fetch feed follows: %v", err))
 		return
 	}
 
-	respondWithJSON(w, 200, databaseFeedFollowsToFeedFollows(feedFollows))
+	RespondWithJSON(w, 200, models.DatabaseFeedFollowsToFeedFollows(feedFollows))
 }
 
-func (apiCfg *apiConfig) handlerDeleteFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *ApiConfig) DeleteFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
 	feedFollowIDStr := chi.URLParam(r, "feedFollowID")
 	feedFollowID, err := uuid.Parse(feedFollowIDStr)
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Invalid feed follow ID: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Invalid feed follow ID: %v", err))
 		return
 	}
 
@@ -71,9 +73,9 @@ func (apiCfg *apiConfig) handlerDeleteFeedFollow(w http.ResponseWriter, r *http.
 	})
 
 	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Error caught while deleting feed follows: %v", err))
+		ResponseWithError(w, 400, fmt.Sprintf("Error caught while deleting feed follows: %v", err))
 		return
 	}
 
-	respondWithJSON(w, 200, struct{}{})
+	RespondWithJSON(w, 200, struct{}{})
 }
