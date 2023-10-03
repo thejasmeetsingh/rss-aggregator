@@ -17,7 +17,3 @@ My first go project which is basically a RSS management system where user can cr
     ```
     You can set the respected values as per your need
 - And finally run `docker-compose up` and that's it!
-
-## Pending feature
-- Add pagination in list APIs.
-- Accept limit query param in list APIs.

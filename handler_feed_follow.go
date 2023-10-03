@@ -42,7 +42,11 @@ func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.
 }
 
 func (apiCfg *apiConfig) handlerGetFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
-	feedFollows, err := apiCfg.DB.GetFeedFollow(r.Context(), user.ID)
+	feedFollows, err := apiCfg.DB.GetFeedFollow(r.Context(), database.GetFeedFollowParams{
+		UserID: user.ID,
+		Limit:  10,
+		Offset: GetOffset(r),
+	})
 
 	if err != nil {
 		responseWithError(w, 400, fmt.Sprintf("Cannot fetch feed follows: %v", err))

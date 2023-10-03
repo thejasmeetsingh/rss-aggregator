@@ -43,7 +43,10 @@ func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Reques
 }
 
 func (apiCfg *apiConfig) handlerGetFeeds(w http.ResponseWriter, r *http.Request) {
-	feeds, err := apiCfg.DB.GetFeeds(r.Context())
+	feeds, err := apiCfg.DB.GetFeeds(r.Context(), database.GetFeedsParams{
+		Limit:  10,
+		Offset: GetOffset(r),
+	})
 
 	if err != nil {
 		responseWithError(w, 400, fmt.Sprintf("Cannot fetch the feeds: %v", err))

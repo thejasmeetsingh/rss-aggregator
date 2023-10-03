@@ -4,7 +4,7 @@ VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING *;
 
 -- name: GetFeeds :many
-SELECT * FROM feeds;
+SELECT * FROM feeds LIMIT $1 OFFSET $2;
 
 -- name: GetNextFeedsToFetch :many
 SELECT * FROM feeds 
