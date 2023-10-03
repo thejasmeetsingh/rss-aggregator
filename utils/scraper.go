@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"github.com/thejasmeetsingh/rss-aggregator/internal/database"
 )
 
-func startScraping(db *database.Queries, conncurrency int, timeBetweenRequest time.Duration) {
+func StartScraping(db *database.Queries, conncurrency int, timeBetweenRequest time.Duration) {
 	log.Printf("Scraping on %v goroutines every %s duration", conncurrency, timeBetweenRequest)
 	ticker := time.NewTimer(timeBetweenRequest)
 
